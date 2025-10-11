@@ -1,0 +1,14 @@
+[project]
+name = "google-ads-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.12.4",
+    "pydantic-settings>=2.11.0",
+]
+
+
+[project.scripts]
+google-ads-mcp = "google_ads_mcp.__main__:main"
