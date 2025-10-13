@@ -4,6 +4,6 @@ This module holds the MCP server instance to avoid circular imports between
 __main__.py and tools modules.
 """
 
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP("Google Ads MCP Server")
