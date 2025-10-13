@@ -42,7 +42,7 @@ cp .env.example .env
 
 2. Fill in your credentials in `.env`:
 ```env
-GOOGLE_DEVELOPER_TOKEN=your_developer_token
+GOOGLE_ADS_DEVELOPER_TOKEN=your_developer_token
 GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your_client_secret
 GOOGLE_ADS_REFRESH_TOKEN=your_refresh_token
@@ -60,7 +60,7 @@ GOOGLE_ADS_MCC_ID=1234567890
 uv run google-ads-mcp
 
 # Or with environment variables
-GOOGLE_DEVELOPER_TOKEN=xxx GOOGLE_CLIENT_ID=xxx ... uv run google-ads-mcp
+GOOGLE_ADS_DEVELOPER_TOKEN=xxx GOOGLE_CLIENT_ID=xxx ... uv run google-ads-mcp
 ```
 
 ### Integration with MCPClientBuilder

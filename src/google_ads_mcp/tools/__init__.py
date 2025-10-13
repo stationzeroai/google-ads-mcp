@@ -1,6 +1,6 @@
 """Google Ads MCP tools."""
 
-from ..__main__ import mcp
+from ..server import mcp
 from .health import check_google_ads_connection
 
 

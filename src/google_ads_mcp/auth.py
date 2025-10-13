@@ -31,7 +31,7 @@ def get_ads_client() -> GoogleAdsClient:
 
         # Create OAuth2 credentials with refresh token
         credentials = Credentials(
-            token=None,  # Will be refreshed automatically
+            token=None,  # Will be refreshed automatically by the client when needed
             refresh_token=config.GOOGLE_ADS_REFRESH_TOKEN,
             token_uri="https://oauth2.googleapis.com/token",
             client_id=config.GOOGLE_CLIENT_ID,
@@ -42,9 +42,6 @@ def get_ads_client() -> GoogleAdsClient:
                 "https://www.googleapis.com/auth/adwords",
             ],
         )
-
-        # Refresh the token to ensure we have a valid access token
-        credentials.refresh(Request())
 
         # Create client with optional MCC support
         client_kwargs = {

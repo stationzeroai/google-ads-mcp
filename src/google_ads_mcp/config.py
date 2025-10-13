@@ -13,4 +13,4 @@ class Settings(BaseSettings):
     GOOGLE_ADS_MCC_ID: Optional[str] = None  # Optional MCC ID for manager accounts
 
 
-config = Settings()  # type: ignore
+config = Settings()

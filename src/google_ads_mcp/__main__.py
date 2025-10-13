@@ -1,21 +1,22 @@
-from fastmcp import FastMCP
+from .server import mcp
 from .tools import *
 from .config import config
 from .auth import get_ads_client
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-mcp = FastMCP("Google Ads MCP Server")
 
 # Initialize Google Ads client on startup
 _ads_client = None
 
 
 def get_client():
-    """Get or create the Google Ads client instance."""
+    """Get or create the Google Ads client instance.
+
+    Returns:
+        GoogleAdsClient: Authenticated Google Ads API client instance
+    """
     global _ads_client
     if _ads_client is None:
         try:
