@@ -2,24 +2,23 @@
 
 from ..server import mcp
 from .health import check_google_ads_connection
-from .gaql import execute_gaql_query, preprocess_gaql_query
-from .customers import list_accessible_customers, get_customer_info
+from .gaql import preprocess_gaql_query
 
 
 # Register health check tool
 @mcp.tool()
-def check_connection() -> str:
+async def check_connection() -> str:
     """Test Google Ads API authentication and return connection status.
 
     Returns:
         str: JSON string with connection status and accessible customer information
     """
-    return check_google_ads_connection()
+    return await check_google_ads_connection()
 
 
 # Register GAQL query tools
 @mcp.tool()
-def execute_gaql(query: str, customer_id: str) -> str:
+async def execute_gaql(query: str, customer_id: str) -> str:
     """Execute a Google Ads Query Language (GAQL) query.
 
     Args:
@@ -32,11 +31,12 @@ def execute_gaql(query: str, customer_id: str) -> str:
     Example:
         SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_7_DAYS
     """
-    return execute_gaql_query(query, customer_id)
+    from .gaql import _execute_gaql_async
+    return await _execute_gaql_async(query, customer_id)
 
 
 @mcp.tool()
-def preprocess_gaql(query: str) -> str:
+async def preprocess_gaql(query: str) -> str:
     """Validate and optimize a GAQL query for better performance.
 
     Args:
@@ -50,17 +50,18 @@ def preprocess_gaql(query: str) -> str:
 
 # Register customer account tools
 @mcp.tool()
-def list_customers() -> str:
+async def list_customers() -> str:
     """List all accessible Google Ads customer accounts.
 
     Returns:
         str: JSON string with list of accessible customer accounts and their IDs
     """
-    return list_accessible_customers()
+    from .customers import _list_accessible_customers_async
+    return await _list_accessible_customers_async()
 
 
 @mcp.tool()
-def get_customer_details(customer_id: str) -> str:
+async def get_customer_details(customer_id: str) -> str:
     """Get detailed information about a Google Ads customer account.
 
     Args:
@@ -69,4 +70,5 @@ def get_customer_details(customer_id: str) -> str:
     Returns:
         str: JSON string with customer account details (name, currency, timezone, etc.)
     """
-    return get_customer_info(customer_id)
+    from .customers import _get_customer_info_async
+    return await _get_customer_info_async(customer_id)

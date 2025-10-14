@@ -1,10 +1,11 @@
 """Health check and authentication validation tools."""
 
+import asyncio
 import json
 from google.ads.googleads.errors import GoogleAdsException
 
 
-def check_google_ads_connection() -> str:
+async def check_google_ads_connection() -> str:
     """Test Google Ads API authentication and return connection status.
 
     This tool validates that the Google Ads client is properly authenticated
@@ -21,7 +22,9 @@ def check_google_ads_connection() -> str:
 
         # Test the connection by listing accessible customers
         customer_service = client.get_service("CustomerService")
-        accessible_customers = customer_service.list_accessible_customers()
+        accessible_customers = await asyncio.to_thread(
+            customer_service.list_accessible_customers
+        )
 
         customers = []
         for customer_resource_name in accessible_customers.resource_names:

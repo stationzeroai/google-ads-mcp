@@ -4,7 +4,6 @@ import asyncio
 import json
 import logging
 import re
-from typing import Dict, List, Any
 
 from google.ads.googleads.errors import GoogleAdsException
 
@@ -186,43 +185,6 @@ async def _execute_gaql_async(query: str, customer_id: str) -> str:
         }, indent=2)
 
 
-def execute_gaql_query(query: str, customer_id: str) -> str:
-    """Execute a Google Ads Query Language (GAQL) query.
-
-    Args:
-        query: GAQL query string to execute
-        customer_id: Google Ads customer ID (10 digits, with or without dashes)
-
-    Returns:
-        JSON string containing query results
-
-    Date Filtering Examples:
-        CORRECT:
-            "WHERE segments.date DURING YESTERDAY"  # Use DURING with date keywords
-            "WHERE segments.date DURING LAST_7_DAYS"
-            "WHERE segments.date = '2025-09-24'"  # Use YYYY-MM-DD for specific dates
-
-        INCORRECT (will be auto-fixed):
-            "WHERE segments.date = YESTERDAY"  # Will convert to DURING YESTERDAY
-            "WHERE segments.date = TODAY"  # Will convert to DURING TODAY
-
-    Common Date Keywords (use with DURING):
-        - YESTERDAY, TODAY
-        - LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS
-        - LAST_MONTH, THIS_MONTH
-        - LAST_WEEK_MON_SUN, THIS_WEEK_MON_TODAY
-
-    Example Query:
-        SELECT
-            campaign.name,
-            metrics.impressions,
-            metrics.clicks,
-            metrics.cost_micros
-        FROM campaign
-        WHERE segments.date DURING YESTERDAY
-            AND campaign.status = 'ENABLED'
-    """
-    return asyncio.run(_execute_gaql_async(query, customer_id))
 
 
 def preprocess_gaql_query(query: str) -> str:

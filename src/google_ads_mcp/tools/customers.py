@@ -61,14 +61,6 @@ async def _list_accessible_customers_async() -> str:
         }, indent=2)
 
 
-def list_accessible_customers() -> str:
-    """List all accessible Google Ads customer accounts.
-
-    Returns:
-        JSON string containing list of accessible customer accounts with their IDs
-        and resource names. These customer IDs can be used with other tools.
-    """
-    return asyncio.run(_list_accessible_customers_async())
 
 
 async def _get_customer_info_async(customer_id: str) -> str:
@@ -177,19 +169,3 @@ async def _get_customer_info_async(customer_id: str) -> str:
         }, indent=2)
 
 
-def get_customer_info(customer_id: str) -> str:
-    """Get detailed information about a Google Ads customer account.
-
-    Args:
-        customer_id: Google Ads customer ID (10 digits, with or without dashes)
-
-    Returns:
-        JSON string containing customer account information including:
-        - Account name
-        - Currency code
-        - Time zone
-        - Auto-tagging settings
-        - Manager account status
-        - Test account status
-    """
-    return asyncio.run(_get_customer_info_async(customer_id))
