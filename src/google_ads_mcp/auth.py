@@ -43,6 +43,9 @@ def get_ads_client() -> GoogleAdsClient:
             ],
         )
 
+        # Explicitly refresh the token to ensure we have a valid access token
+        credentials.refresh(Request())
+
         # Create client with optional MCC support
         client_kwargs = {
             "credentials": credentials,
