@@ -26,10 +26,33 @@ async def execute_gaql(query: str, customer_id: str) -> str:
         customer_id: Google Ads customer ID (10 digits, with or without dashes)
 
     Returns:
-        str: JSON string containing query results
+        str: JSON string containing query results with total_results count and results array
 
-    Example:
-        SELECT campaign.name, metrics.clicks FROM campaign WHERE segments.date DURING LAST_7_DAYS
+    Date Filtering Examples:
+        CORRECT:
+            "WHERE segments.date DURING YESTERDAY"  # Use DURING with date keywords
+            "WHERE segments.date DURING LAST_7_DAYS"
+            "WHERE segments.date = '2025-09-24'"  # Use YYYY-MM-DD for specific dates
+
+        INCORRECT (will be auto-fixed):
+            "WHERE segments.date = YESTERDAY"  # Will convert to DURING YESTERDAY
+            "WHERE segments.date = TODAY"  # Will convert to DURING TODAY
+
+    Common Date Keywords (use with DURING):
+        - YESTERDAY, TODAY
+        - LAST_7_DAYS, LAST_14_DAYS, LAST_30_DAYS
+        - LAST_MONTH, THIS_MONTH
+        - LAST_WEEK_MON_SUN, THIS_WEEK_MON_TODAY
+
+    Example Query:
+        SELECT
+            campaign.name,
+            metrics.impressions,
+            metrics.clicks,
+            metrics.cost_micros
+        FROM campaign
+        WHERE segments.date DURING YESTERDAY
+            AND campaign.status = 'ENABLED'
     """
     from .gaql import _execute_gaql_async
     return await _execute_gaql_async(query, customer_id)
