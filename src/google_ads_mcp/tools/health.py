@@ -12,7 +12,7 @@ async def check_google_ads_connection() -> str:
     and can communicate with the Google Ads API.
 
     Returns:
-        str: JSON string containing connection status and accessible customer information
+        str: JSON string containing connection status and customer count
     """
     from ..__main__ import get_client
     from ..config import config
@@ -26,21 +26,14 @@ async def check_google_ads_connection() -> str:
             customer_service.list_accessible_customers
         )
 
-        customers = []
-        for customer_resource_name in accessible_customers.resource_names:
-            # Extract customer ID from resource name (format: customers/{customer_id})
-            customer_id = customer_resource_name.split("/")[-1]
-            customers.append(
-                {"customer_id": customer_id, "resource_name": customer_resource_name}
-            )
+        total_customers = len(accessible_customers.resource_names)
 
         return json.dumps(
             {
                 "status": "connected",
                 "authentication_method": "refresh_token",
                 "mcc_account": config.GOOGLE_ADS_MCC_ID or "N/A",
-                "total_accessible_customers": len(customers),
-                "accessible_customers": customers[:5],  # Return first 5 for brevity
+                "total_accessible_customers": total_customers,
                 "message": "Successfully authenticated with Google Ads API",
             },
             indent=2,
