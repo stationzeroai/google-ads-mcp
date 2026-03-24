@@ -95,3 +95,63 @@ async def get_customer_details(customer_id: str) -> str:
     """
     from .customers import _get_customer_info_async
     return await _get_customer_info_async(customer_id)
+
+
+# Register campaign management tools
+@mcp.tool()
+async def update_campaign_budget(
+    customer_id: str,
+    budget_resource_name: str,
+    amount_micros: int,
+) -> str:
+    """Update the daily budget amount for a Google Ads campaign budget.
+
+    Args:
+        customer_id: Google Ads customer ID (10 digits, with or without dashes)
+        budget_resource_name: Full resource name of the budget (format: customers/{id}/campaignBudgets/{id}).
+            Use get_campaign_budgets to find this value.
+        amount_micros: New daily budget in micros (1 currency unit = 1,000,000 micros, e.g. 50000000 = R$50/day)
+
+    Returns:
+        str: JSON with the resource_name of the updated budget
+    """
+    from .campaigns import _update_campaign_budget_async
+    return await _update_campaign_budget_async(customer_id, budget_resource_name, amount_micros)
+
+
+@mcp.tool()
+async def update_campaign_status(
+    customer_id: str,
+    campaign_resource_name: str,
+    status: str,
+) -> str:
+    """Update the status of a Google Ads campaign (enable or pause).
+
+    Args:
+        customer_id: Google Ads customer ID (10 digits, with or without dashes)
+        campaign_resource_name: Full resource name of the campaign (format: customers/{id}/campaigns/{id})
+        status: New campaign status — must be ENABLED or PAUSED
+
+    Returns:
+        str: JSON with the resource_name of the updated campaign
+    """
+    from .campaigns import _update_campaign_status_async
+    return await _update_campaign_status_async(customer_id, campaign_resource_name, status)
+
+
+@mcp.tool()
+async def get_campaign_budgets(
+    customer_id: str,
+    campaign_ids: list[str] | None = None,
+) -> str:
+    """Get budget information for enabled Google Ads campaigns.
+
+    Args:
+        customer_id: Google Ads customer ID (10 digits, with or without dashes)
+        campaign_ids: Optional list of campaign IDs to filter by. If not provided, returns budgets for all enabled campaigns.
+
+    Returns:
+        str: JSON with campaign budget details (campaign id, name, budget resource_name, amount_micros)
+    """
+    from .campaigns import _get_campaign_budgets_async
+    return await _get_campaign_budgets_async(customer_id, campaign_ids)
