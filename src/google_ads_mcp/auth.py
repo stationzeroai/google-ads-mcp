@@ -30,17 +30,15 @@ def get_ads_client() -> GoogleAdsClient:
             raise ValueError("GOOGLE_CLIENT_SECRET is required")
 
         # Create OAuth2 credentials with refresh token
+        # Do not specify scopes — the refresh token already carries its authorized scopes.
+        # Passing scopes here causes google-auth to send them during refresh, which fails
+        # if the token was issued with a narrower scope (e.g., adwords-only MCC tokens).
         credentials = Credentials(
-            token=None,  # Will be refreshed automatically by the client when needed
+            token=None,
             refresh_token=config.GOOGLE_ADS_REFRESH_TOKEN,
             token_uri="https://oauth2.googleapis.com/token",
             client_id=config.GOOGLE_CLIENT_ID,
             client_secret=config.GOOGLE_CLIENT_SECRET,
-            scopes=[
-                "https://www.googleapis.com/auth/userinfo.email",
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/adwords",
-            ],
         )
 
         # Explicitly refresh the token to ensure we have a valid access token
